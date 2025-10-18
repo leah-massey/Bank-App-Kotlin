@@ -1,9 +1,13 @@
 package domains
 
+import domains.models.AccountNumber
+import domains.models.UserName
 import ports.BankAccountDomain
+import ports.BankAccountRepository
 
-class BankAccountDomain: BankAccountDomain {
-    override fun createNewAccount(firstName: String, lastName: String) {
-        TODO("Not yet implemented")
+class BankAccountDomain(val repository: BankAccountRepository): BankAccountDomain {
+
+    override fun createNewAccount(userName: UserName): AccountNumber {
+        return repository.create(userName)
     }
 }

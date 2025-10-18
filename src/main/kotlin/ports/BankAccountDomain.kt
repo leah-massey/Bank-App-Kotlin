@@ -1,5 +1,8 @@
 package ports
 
+import domains.models.AccountNumber
+import domains.models.UserName
+
 interface BankAccountDomain {
-    fun createNewAccount(firstName: String, lastName: String) // maybe shouldn't return the value
+    fun createNewAccount(userName: UserName): AccountNumber
 }
