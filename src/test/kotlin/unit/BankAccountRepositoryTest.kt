@@ -49,4 +49,14 @@ class BankAccountRepositoryTest {
 
         assertEquals(3.0, balance)
     }
+
+    @Test
+    fun `returns the balance of a given account`() {
+        val userName = UserName("Jasmine", "Paulini")
+        bankAccountRepository.create(userName)
+        bankAccountRepository.deposit(10.00, 10000)
+
+        val balance = bankAccountRepository.balance(10000)
+        assertEquals(10.00, balance)
+    }
 }

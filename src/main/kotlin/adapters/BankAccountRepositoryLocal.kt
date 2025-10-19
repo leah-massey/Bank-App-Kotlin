@@ -40,6 +40,10 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         }
     }
 
+    override fun balance(accountNumber: AccountNumber): Double? {
+        return find(accountNumber)?.balance
+    }
+
     override fun clear() {
        repository.clear()
     }

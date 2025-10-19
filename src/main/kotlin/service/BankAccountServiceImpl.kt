@@ -35,11 +35,9 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
                 lastName
             )
         )
-
         return AccountCreationSuccess(accountNumber)
     }
 
-    // TODO remove currency validation test and code
     override fun depositMoney(depositDetails: List<String>): DepositResult {
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositDetails, 2)
 

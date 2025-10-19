@@ -12,4 +12,5 @@ interface BankAccountRepository {
     fun clear()
     fun accountExists(accountNumber: AccountNumber): Boolean
     fun withdraw(amount: Double, accountNumber: AccountNumber)
+    fun balance(accountNumber: AccountNumber): Double?
 }
