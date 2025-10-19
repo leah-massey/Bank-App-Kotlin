@@ -38,12 +38,13 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val depositIsValidCurrencyFormat: Boolean = inputValidation.isValidCurrencyFormat(depositDetails[0])
 
         val (amountString, accountNumberString) = depositDetails
-        val amount = amountString.toDouble()
-        val accountNumber = accountNumberString.toInt()
 
         if (!isValidInputLength || !depositIsValidCurrencyFormat) {
             return InvalidDepositRequest("Your input does not have the correct format")
         }
+
+        val amount = amountString.toDouble()
+        val accountNumber = accountNumberString.toInt()
 
         if ( repository.accountExists(accountNumber)) {
             repository.deposit(amount, accountNumber)

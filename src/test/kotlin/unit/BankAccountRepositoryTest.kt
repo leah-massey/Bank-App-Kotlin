@@ -35,6 +35,6 @@ class BankAccountRepositoryTest {
         bankAccountRepository.deposit(10.0, 10000)
         val balance = bankAccountRepository.find(10000)?.balance
 
-        assertEquals(10, balance)
+        assertEquals(10.0, balance)
     }
 }

@@ -35,7 +35,7 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
                     }
                 }
                 (command == "deposit") -> {
-                    val result = bankAccountService.depositMoney(depositDetails = commandDetails)
+                    val result = bankAccountService.depositMoney(commandDetails)
                     when (result) {
                         is DepositSuccess -> {
                             println(result.message)
