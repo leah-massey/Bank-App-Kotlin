@@ -29,4 +29,27 @@ class BankingControllerTest {
             System.setOut(originalOut)
         }
     }
+
+    @Test
+    fun `GIVEN an invalid command, THEN the user is notified by a message in the console`() {
+        val bankAccountRepository = BankAccountRepositoryLocal()
+        val bankAccountService = BankAccountServiceImpl(bankAccountRepository)
+        val userInputProvider = FakeUserInputProvider(listOf("New Account Coco Gauff", "quit"))
+        val bankingController = BankingControllerImpl(bankAccountService, userInputProvider)
+
+        val outputStream = ByteArrayOutputStream()
+        val printStream = PrintStream(outputStream, true, "UTF-8")
+        val originalOut = System.out
+
+        try{
+            System.setOut(PrintStream(outputStream))
+            bankingController.startBanking()
+            printStream.flush()
+            val output = outputStream.toString()
+            assertTrue(output.contains("I didn't quite get that, please try again"))
+        } finally{
+            System.setOut(originalOut)
+        }
+    }
+
 }

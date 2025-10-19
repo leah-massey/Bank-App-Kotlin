@@ -5,31 +5,34 @@ import ports.BankAccountService
 import ports.BankingController
 import ports.UserInputProvider
 
-class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider): BankingController {
+class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
+    BankingController {
 
     override fun startBanking() {
-            println("Welcome to the Bank CLI!")
-            println("NewAccount [FirstName] [LastName] -> creates new account")
+        println("Welcome to the Bank CLI!")
+        println("NewAccount [FirstName] [LastName] -> creates new account")
 
-            while (true) {
-                print("> ")
-                val processedUserInput = userInput.readLine().trim().lowercase().split(" ")
-                println("🌸")
-                println(processedUserInput)
-                val command = processedUserInput.first()
+        while (true) {
+            print("> ")
+            val processedUserInput = userInput.readLine().trim().lowercase().split(" ")
+            val command = processedUserInput.first()
 
-                when {
-                    (command == "newaccount") -> {
-                        val (_, firstName, lastName) = processedUserInput
+            when {
+                (command == "newaccount") -> {
+                    val (_, firstName, lastName) = processedUserInput
 
-                        println( bankAccountService.createNewAccount(
-                        UserName(
-                            firstName,
-                            lastName
+                    println(
+                        bankAccountService.createNewAccount(
+                            UserName(
+                                firstName,
+                                lastName
+                            )
                         )
-                    ))}
-                    else -> break
+                    )
                 }
+                (command == "quit") -> break
+                else -> println("I didn't quite get that, please try again")
             }
         }
     }
+}
