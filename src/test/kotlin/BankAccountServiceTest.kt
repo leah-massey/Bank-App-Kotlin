@@ -11,6 +11,7 @@ import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidWithdrawalRequest
+import ports.ResultTypes.StatementSuccess
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
 import kotlin.test.assertEquals
@@ -103,7 +104,19 @@ class BankAccountServiceTest {
 
             assertEquals(BalanceAccountNotFound("Balance account not found"), actual)
         }
+    }
 
+    @Nested
+    inner class Statement {
+        @Test
+        fun `GIVEN account exists, THEN a list of transactions is returned`() {
+            val userDetails = listOf("Carlos", "Alcaraz")
+            bankAccountService.createNewAccount(userDetails)
+            bankAccountService.depositMoney(listOf("10.00", "10000"))
+            val statement = bankAccountService.getStatement(listOf("10000"))
+
+            assertEquals(StatementSuccess(mutableListOf(Pair("new account", 0.0), Pair("deposit 10.0", 10.00))), statement)
+        }
     }
 
 }

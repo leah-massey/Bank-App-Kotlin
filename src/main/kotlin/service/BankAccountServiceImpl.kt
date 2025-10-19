@@ -16,7 +16,10 @@ import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidBalanceRequest
 import ports.ResultTypes.InvalidDepositRequest
+import ports.ResultTypes.InvalidStatementRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
+import ports.ResultTypes.StatementResult
+import ports.ResultTypes.StatementSuccess
 import ports.ResultTypes.ValidationError
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalResult
@@ -26,13 +29,13 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
     val inputValidation = InputValidation()
 
-    override fun createNewAccount(userDetails: List<String>): CreateAccountResult {
+    override fun createNewAccount(userInputDetails: List<String>): CreateAccountResult {
 
-        if (!inputValidation.isValidInputLength(userDetails, 2)) {
+        if (!inputValidation.isValidInputLength(userInputDetails, 2)) {
             return ValidationError("Invalid input format")
         }
 
-        val (firstName, lastName) = userDetails
+        val (firstName, lastName) = userInputDetails
         val accountNumber = repository.create(
             UserName(
                 firstName,
@@ -42,11 +45,11 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         return AccountCreationSuccess(accountNumber)
     }
 
-    override fun depositMoney(depositDetails: List<String>): DepositResult {
-        val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositDetails, 2)
+    override fun depositMoney(depositInputDetails: List<String>): DepositResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositInputDetails, 2)
 
-        val amount = depositDetails.getOrNull(0)?.toDoubleOrNull()
-        val accountNumber = depositDetails.getOrNull(1)?.toIntOrNull()
+        val amount = depositInputDetails.getOrNull(0)?.toDoubleOrNull()
+        val accountNumber = depositInputDetails.getOrNull(1)?.toIntOrNull()
 
         if (amount == null || accountNumber == null || !isValidInputLength) {
             return InvalidDepositRequest("Invalid input format")
@@ -61,10 +64,10 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
     }
 
-    override fun withdrawMoney(withdrawalDetails: List<String>): WithdrawalResult {
-        val isValidInputLength: Boolean = inputValidation.isValidInputLength(withdrawalDetails, 2)
-        val amount = withdrawalDetails.getOrNull(0)?.toDoubleOrNull()
-        val accountNumber = withdrawalDetails.getOrNull(1)?.toIntOrNull()
+    override fun withdrawMoney(withdrawalInputDetails: List<String>): WithdrawalResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(withdrawalInputDetails, 2)
+        val amount = withdrawalInputDetails.getOrNull(0)?.toDoubleOrNull()
+        val accountNumber = withdrawalInputDetails.getOrNull(1)?.toIntOrNull()
 
         if (accountNumber == null || amount == null || !isValidInputLength) {
             return InvalidWithdrawalRequest("Invalid input format")
@@ -82,9 +85,9 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         return WithdrawalSuccess("Withdrawal successful")
     }
 
-    override fun getBalance(balanceDetails: List<String>): BalanceResult {
-        val isValidInputLength: Boolean = inputValidation.isValidInputLength(balanceDetails, 1)
-        val accountNumber = balanceDetails.getOrNull(0)?.toIntOrNull()
+    override fun getBalance(balanceInputDetails: List<String>): BalanceResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(balanceInputDetails, 1)
+        val accountNumber = balanceInputDetails.getOrNull(0)?.toIntOrNull()
 
         if (accountNumber == null || !isValidInputLength) {
             return InvalidBalanceRequest("Invalid input format")
@@ -96,6 +99,17 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
         val balance = repository.balance(accountNumber)
         return BalanceSuccess(balance.toString())
+    }
+
+    override fun getStatement(statementInputDetails: List<String>): StatementResult {
+        val accountNumber = statementInputDetails.getOrNull(0)?.toIntOrNull()
+
+        if (accountNumber == null) {
+            return InvalidStatementRequest("Invalid input format")
+        }
+
+        val statement = repository.statement(accountNumber)
+        return StatementSuccess(statement)
     }
 
     private fun withdrawalFundsAvailable(withdrawalAmount: Double, accountNumber: AccountNumber): Boolean {

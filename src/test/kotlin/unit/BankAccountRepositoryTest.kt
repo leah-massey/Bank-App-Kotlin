@@ -61,7 +61,7 @@ class BankAccountRepositoryTest {
     }
 
     @Test
-    fun `returns a list of transactions`() {
+    fun `returns a list of transactions for a given account`() {
         val userName = UserName("Jasmine", "Paulini")
         bankAccountRepository.create(userName)
         bankAccountRepository.deposit(10.00, 10000)
