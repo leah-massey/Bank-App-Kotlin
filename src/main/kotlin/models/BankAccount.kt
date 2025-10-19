@@ -8,5 +8,4 @@ data class AccountDetails(
     var balance: Double,
 )
 
-
 typealias BankAccounts =  MutableMap<AccountNumber, AccountDetails>

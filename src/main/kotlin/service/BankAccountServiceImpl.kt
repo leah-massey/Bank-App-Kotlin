@@ -51,38 +51,5 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         } else {
             return DepositAccountNotFound("The provided account does not exist")
         }
-
-
-
-//        if(isValidInputLength) {
-//
-//            val (amountString, accountNumberString) = depositDetails
-//
-//            val amount = amountString.toDouble()
-//            val accountNumber = accountNumberString.toInt()
-//
-//
-//            val accountExists: Boolean = repository.accountExists(accountNumber.toInt())
-//
-//            if (accountExists) {
-//                repository.deposit(amount.toInt(), )
-//            }
-//
-//
-//        }
-//
-
-
-
-
-//        if (repository.accountExists(accountNumber)) {
-//            repository.deposit(amount, accountNumber)
-//            return DepositSuccess
-//        } else {
-//            return AccountNotFound("The provided account does not exist")
-//        }
-
-        return DepositAccountNotFound("The provided account does not exist")
-
     }
 }
