@@ -103,9 +103,10 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
     }
 
     override fun getStatement(statementInputDetails: List<String>): StatementResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(statementInputDetails, 1)
         val accountNumber = statementInputDetails.getOrNull(0)?.toIntOrNull()
 
-        if (accountNumber == null) {
+        if (accountNumber == null || !isValidInputLength) {
             return InvalidStatementRequest("Invalid input format")
         }
 

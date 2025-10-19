@@ -10,6 +10,7 @@ import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
+import ports.ResultTypes.InvalidStatementRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementSuccess
@@ -123,6 +124,12 @@ class BankAccountServiceTest {
         fun `GIVEN account does not exist, THEN StatementAccountNotFound message is returned`() {
             val statement = bankAccountService.getStatement(listOf("10000"))
             assertEquals(StatementAccountNotFound("Statement account not found"), statement)
+        }
+
+        @Test
+        fun `GIVEN incorrect formatting of request, THEN InvalidStatementRequest message is returned`() {
+            val statement = bankAccountService.getStatement(listOf("1000", "40"))
+            assertEquals(InvalidStatementRequest("Invalid input format"), statement)
         }
     }
 
