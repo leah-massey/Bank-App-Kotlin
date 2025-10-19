@@ -19,6 +19,7 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
 
             when {
                 (command == "newaccount") -> {
+//                    isValidInputLength(processedUserInput)
                     val (_, firstName, lastName) = processedUserInput
 
                     println(

@@ -21,7 +21,6 @@ class BankAccountServiceTest {
 
             val accountNumber: AccountNumber = bankAccountDomain.createNewAccount(userName)
             assertEquals(10000, accountNumber)
-
         }
     }
 

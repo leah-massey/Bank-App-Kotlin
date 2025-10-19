@@ -31,10 +31,10 @@ class BankingControllerTest {
     }
 
     @Test
-    fun `GIVEN an invalid command, THEN the user is notified by a message in the console`() {
+    fun `GIVEN an command of incorrect length, THEN the user is notified by a message in the console`() {
         val bankAccountRepository = BankAccountRepositoryLocal()
         val bankAccountService = BankAccountServiceImpl(bankAccountRepository)
-        val userInputProvider = FakeUserInputProvider(listOf("New Account Coco Gauff", "quit"))
+        val userInputProvider = FakeUserInputProvider(listOf("NewAccount Coco Marie Gauff", "quit"))
         val bankingController = BankingControllerImpl(bankAccountService, userInputProvider)
 
         val outputStream = ByteArrayOutputStream()
@@ -51,5 +51,7 @@ class BankingControllerTest {
             System.setOut(originalOut)
         }
     }
+
+
 
 }
