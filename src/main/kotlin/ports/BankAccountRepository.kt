@@ -7,4 +7,6 @@ import models.UserName
 interface BankAccountRepository {
     fun create(userName: UserName): AccountNumber
     fun find(accountNumber: AccountNumber): AccountDetails?
+    fun deposit(amount: Int, accountNumber: AccountNumber)
+    fun clear()
 }

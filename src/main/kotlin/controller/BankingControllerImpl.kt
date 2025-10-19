@@ -1,7 +1,5 @@
 package controller
 
-import InputValidation
-import models.UserName
 import ports.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankingController
@@ -33,7 +31,6 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
                         }
                     }
                 }
-
                 (command == "quit") -> break
                 else -> println("I didn't quite get that, please try again")
             }

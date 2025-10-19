@@ -14,6 +14,7 @@ fun main() {
     val userInput: UserInputProvider = UserInputProviderImpl()
     val bankingController: BankingController = BankingControllerImpl(bankAccountService, userInput)
 
+    bankingController.startBanking()
 }
 
 

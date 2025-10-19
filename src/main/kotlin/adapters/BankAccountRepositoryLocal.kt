@@ -11,11 +11,29 @@ class BankAccountRepositoryLocal: BankAccountRepository {
 
     override fun create(userName: UserName): AccountNumber {
         val newAccountNumber = generateNewAccountNumber()
-        val newAccountDetails = AccountDetails(userName = userName, balance = 0)
+        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, balance = 0)
 
         repository[newAccountNumber] = newAccountDetails
         return newAccountNumber
     }
+
+    override fun deposit(amount: Int, accountNumber: AccountNumber) {
+        // TODO check account exists should happen in service layer
+        val account = find(accountNumber)
+
+        if (account != null ) {
+            val existingBalance = account.balance
+            val newBalance = existingBalance + amount
+            val updatedAccount = account.copy(balance = newBalance)
+            repository[accountNumber] = updatedAccount
+        }
+    }
+
+    override fun clear() {
+       repository.clear()
+    }
+
+    // TODO accountExist = repo.containsKey
 
     override fun find(accountNumber: AccountNumber): AccountDetails? {
         return repository.get(accountNumber)
