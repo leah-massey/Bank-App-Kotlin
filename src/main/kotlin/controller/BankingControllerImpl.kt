@@ -6,6 +6,7 @@ import ports.UserInputProvider
 import ports.commands.Command
 import ports.commands.DepositCommand
 import ports.commands.NewAccountCommand
+import ports.commands.WithdrawalCommand
 
 class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
     BankingController {
@@ -16,10 +17,12 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
 
         val newAccountCommand = NewAccountCommand(bankAccountService)
         val depositCommand = DepositCommand(bankAccountService)
+        val withdrawalCommand = WithdrawalCommand(bankAccountService)
 
         var commandMap: Map<String, Command> = mapOf(
             "newaccount" to newAccountCommand,
-            "deposit" to depositCommand
+            "deposit" to depositCommand,
+            "withdraw" to withdrawalCommand
         )
 
         while (true) {
@@ -31,6 +34,7 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
             when (commandMap[command]) {
                 newAccountCommand -> newAccountCommand.execute(commandDetails)
                 depositCommand -> depositCommand.execute(commandDetails)
+                withdrawalCommand -> withdrawalCommand.execute(commandDetails)
                 null -> if (command == "quit") break else println("I didn't quite get that, please try again")
             }
         }

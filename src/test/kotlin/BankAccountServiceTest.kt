@@ -65,6 +65,9 @@ class BankAccountServiceTest {
             val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
             assertEquals(WithdrawalAccountNotFound("Withdrawal account not found"), actual)
         }
+
+        // TODO if insufficient funds
+        // TODO incorrect format
     }
 
 }
