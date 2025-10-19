@@ -40,7 +40,7 @@ class BankAccountServiceTest {
             bankAccountService.createNewAccount(userDetails)
             val actual = bankAccountService.depositMoney(listOf("10.00", "10000"))
 
-            assertEquals(DepositSuccess, actual)
+            assertEquals(DepositSuccess("Deposit successful"), actual)
         }
     }
 }

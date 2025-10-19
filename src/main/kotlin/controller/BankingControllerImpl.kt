@@ -3,6 +3,9 @@ package controller
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankingController
+import ports.ResultTypes.DepositAccountNotFound
+import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.InvalidDepositRequest
 import ports.UserInputProvider
 import ports.ResultTypes.ValidationError
 
@@ -33,6 +36,17 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
                 }
                 (command == "deposit") -> {
                     val result = bankAccountService.depositMoney(depositDetails = commandDetails)
+                    when (result) {
+                        is DepositSuccess -> {
+                            println(result.message)
+                        }
+                        is DepositAccountNotFound -> {
+                            println(result.message)
+                        }
+                        is InvalidDepositRequest -> {
+                            println(result.message)
+                        }
+                    }
                 }
                 (command == "quit") -> break
                 else -> println("I didn't quite get that, please try again")

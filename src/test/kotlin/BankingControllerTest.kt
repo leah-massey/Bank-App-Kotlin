@@ -57,7 +57,7 @@ class BankingControllerTest {
     }
 
     @Test
-    fun `GIVEN a valid deposit request, THEN nothing is logged to the console`() {
+    fun `GIVEN a valid deposit request, THEN a success message is logged to the console`() {
         val userInputProvider = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "quit"))
         val bankingController = BankingControllerImpl(bankAccountService, userInputProvider)
 

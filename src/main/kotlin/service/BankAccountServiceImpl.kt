@@ -47,7 +47,7 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
         if ( repository.accountExists(accountNumber)) {
             repository.deposit(amount, accountNumber)
-            return DepositSuccess
+            return DepositSuccess("Deposit successful")
         } else {
             return DepositAccountNotFound("The provided account does not exist")
         }
