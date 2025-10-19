@@ -54,8 +54,9 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         return account?.transactions[account.transactions.size -1]?.second
     }
 
-    override fun statement(accountNumber: AccountNumber): List<Pair<String, Double>> {
-        TODO("Not yet implemented")
+    override fun statement(accountNumber: AccountNumber): List<Pair<String, Double>>? {
+        val account = find(accountNumber)
+        return account?.transactions
     }
 
     override fun clear() {
