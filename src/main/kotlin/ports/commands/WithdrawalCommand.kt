@@ -1,6 +1,7 @@
 package ports.commands
 
 import ports.BankAccountService
+import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
 
@@ -13,6 +14,9 @@ class WithdrawalCommand(val bankAccountService: BankAccountService): Command {
                 println(result.message)
             }
             is WithdrawalAccountNotFound -> {
+                println(result.message)
+            }
+            is InvalidWithdrawalRequest -> {
                 println(result.message)
             }
         }

@@ -24,63 +24,60 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
     override fun createNewAccount(userDetails: List<String>): CreateAccountResult {
 
-        if (inputValidation.isValidInputLength(userDetails, 2)) {
-            val (firstName, lastName) = userDetails
-            val accountNumber =  repository.create(
-                UserName(
-                    firstName,
-                    lastName
-                )
-            )
-            return AccountCreationSuccess(accountNumber)
-        } else {
-            return ValidationError("Incorrect format, please try again")
+        if (!inputValidation.isValidInputLength(userDetails, 2)) {
+            return ValidationError("Invalid input format")
         }
+
+        val (firstName, lastName) = userDetails
+        val accountNumber = repository.create(
+            UserName(
+                firstName,
+                lastName
+            )
+        )
+
+        return AccountCreationSuccess(accountNumber)
     }
 
+    // TODO remove currency validation test and code
     override fun depositMoney(depositDetails: List<String>): DepositResult {
-
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositDetails, 2)
-        val depositIsValidCurrencyFormat: Boolean = inputValidation.isValidCurrencyFormat(depositDetails[0])
 
-        val (amountString, accountNumberString) = depositDetails
+        val amount = depositDetails.getOrNull(0)?.toDoubleOrNull()
+        val accountNumber = depositDetails.getOrNull(1)?.toIntOrNull()
 
-        if (!isValidInputLength || !depositIsValidCurrencyFormat) {
-            return InvalidDepositRequest("Your input does not have the correct format")
+        if (amount == null || accountNumber == null || !isValidInputLength) {
+            return InvalidDepositRequest("Invalid input format")
         }
 
-        val amount = amountString.toDoubleOrNull()
-        val accountNumber = accountNumberString.toIntOrNull()
-
-        if ( accountNumber != null && repository.accountExists(accountNumber)) {
-            repository.deposit(amount!!, accountNumber)
-            return DepositSuccess("Deposit successful")
-        } else {
+        if (!repository.accountExists(accountNumber)) {
             return DepositAccountNotFound("The provided account does not exist")
         }
+
+        repository.deposit(amount, accountNumber)
+        return DepositSuccess("Deposit successful")
+
     }
 
     override fun withdrawMoney(withdrawalDetails: List<String>): WithdrawalResult {
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(withdrawalDetails, 2)
-        val depositIsValidCurrencyFormat: Boolean = inputValidation.isValidCurrencyFormat(withdrawalDetails[0])
+        val amount = withdrawalDetails.getOrNull(0)?.toDoubleOrNull()
+        val accountNumber = withdrawalDetails.getOrNull(1)?.toIntOrNull()
 
-        val (amountString, accountNumberString) = withdrawalDetails
-
-        if (!isValidInputLength || !depositIsValidCurrencyFormat) {
+        if (accountNumber == null || amount == null || !isValidInputLength) {
             return InvalidWithdrawalRequest("Invalid input format")
         }
 
-        val amount = amountString.toDoubleOrNull()
-        val accountNumber = accountNumberString.toIntOrNull()
-
-        if (accountNumber == null || !repository.accountExists(accountNumber)) {
+        if (!repository.accountExists(accountNumber)) {
             return WithdrawalAccountNotFound("Withdrawal account not found")
-        } else if (!withdrawalFundsAvailable(amount!!, accountNumber)) {
-            return InsufficientFunds("Insufficient funds")
-        } else {
-            repository.withdraw(amount, accountNumber)
-            return WithdrawalSuccess("Withdrawal successful")
         }
+
+        if (!withdrawalFundsAvailable(amount, accountNumber)) {
+            return InsufficientFunds("Insufficient funds")
+        }
+
+        repository.withdraw(amount, accountNumber)
+        return WithdrawalSuccess("Withdrawal successful")
     }
 
     private fun withdrawalFundsAvailable(withdrawalAmount: Double, accountNumber: AccountNumber): Boolean {

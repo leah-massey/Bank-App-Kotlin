@@ -51,7 +51,7 @@ class BankingControllerTest {
             bankingController.startBanking()
             printStream.flush()
             val output = outputStream.toString()
-            assertTrue(output.contains("Incorrect format, please try again"))
+            assertTrue(output.contains("Invalid input format"))
         } finally{
             System.setOut(originalOut)
         }
@@ -113,7 +113,7 @@ class BankingControllerTest {
                 bankingController.startBanking()
                 printStream.flush()
                 val output = outputStream.toString()
-                assertTrue(output.contains("Your input does not have the correct format"))
+                assertTrue(output.contains("Invalid input format"))
             } finally{
                 System.setOut(originalOut)
             }
@@ -176,7 +176,7 @@ class BankingControllerTest {
                 bankingController.startBanking()
                 printStream.flush()
                 val output = outputStream.toString()
-                assertTrue(output.contains("Your input does not have the correct format"))
+                assertTrue(output.contains("Invalid input format"))
             } finally{
                 System.setOut(originalOut)
             }
