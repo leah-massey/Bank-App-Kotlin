@@ -52,7 +52,7 @@ class BankAccountServiceTest {
     @Nested
     inner class WithdrawMoney {
         @Test
-        fun `withdraws money when provided bank account exists and funds available`() {
+        fun `GIVEN a valid account with available funds, THEN WithdrawalSuccess is returned`() {
             val userDetails = listOf("Carlos", "Alcaraz")
             bankAccountService.createNewAccount(userDetails)
             bankAccountService.depositMoney(listOf("10.00", "10000"))
@@ -62,19 +62,18 @@ class BankAccountServiceTest {
         }
 
         @Test
-        fun `does not withdraw money if account does not exist`() {
+        fun `GIVEN account does not exist THEN WithdrawalAccountNotFound is returned`() {
             val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
             assertEquals(WithdrawalAccountNotFound("Withdrawal account not found"), actual)
         }
 
         @Test
-        fun `alerts user of incorrectly formatted request`() {
+        fun `GIVEN withdrawal amount is incorrectly formatted, THEN InvalidWithdrawalRequest is returned`() {
             val actual = bankAccountService.withdrawMoney(listOf("3ad", "10000"))
             assertEquals(InvalidWithdrawalRequest("Invalid input format"), actual)
         }
 
         // TODO if insufficient funds
-        // TODO incorrect format
     }
 
 }
