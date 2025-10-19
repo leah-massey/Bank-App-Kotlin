@@ -1,26 +1,19 @@
 import adapters.BankAccountRepositoryLocal
-import domains.BankAccountDomainImpl
-import domains.models.UserName
+import adapters.UserInputProviderImpl
+import controller.BankingControllerImpl
+import service.BankAccountServiceImpl
 import ports.BankAccountRepository
-import ports.BankAccountDomain
+import ports.BankAccountService
+import ports.BankingController
+import ports.UserInputProvider
 
 fun main() {
 
     val bankAccountRepository: BankAccountRepository = BankAccountRepositoryLocal()
-    val bankAccountDomain: BankAccountDomain = BankAccountDomainImpl(bankAccountRepository)
+    val bankAccountService: BankAccountService = BankAccountServiceImpl(bankAccountRepository)
+    val userInput: UserInputProvider = UserInputProviderImpl()
+    val bankingController: BankingController = BankingControllerImpl(bankAccountService, userInput)
 
-    println("Welcome to the Bank CLI!")
-    println("NewAccount [FirstName] [LastName] -> creates new account")
-
-    while (true) {
-        print("> ")
-        val (command, firstName, lastName) = readln().trim().lowercase().split(" ")
-
-        when {
-            (command == "newaccount") -> println( bankAccountDomain.createNewAccount(UserName(firstName, lastName)))
-            else -> break
-        }
-    }
 }
 
 

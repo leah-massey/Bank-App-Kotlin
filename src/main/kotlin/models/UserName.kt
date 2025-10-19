@@ -1,4 +1,4 @@
-package domains.models
+package models
 
 data class UserName(
     val firstName: String,

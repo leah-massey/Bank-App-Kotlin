@@ -1,9 +1,9 @@
 package unit
 
 import adapters.BankAccountRepositoryLocal
-import domains.models.AccountDetails
-import domains.models.AccountNumber
-import domains.models.UserName
+import models.AccountDetails
+import models.AccountNumber
+import models.UserName
 import org.junit.jupiter.api.Test
 import ports.BankAccountRepository
 import kotlin.test.assertNotNull

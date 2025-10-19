@@ -1,8 +1,8 @@
 package ports
 
-import domains.models.AccountDetails
-import domains.models.AccountNumber
-import domains.models.UserName
+import models.AccountDetails
+import models.AccountNumber
+import models.UserName
 
 interface BankAccountRepository {
     fun create(userName: UserName): AccountNumber
