@@ -246,8 +246,5 @@ class BankingControllerTest {
                 System.setOut(originalOut)
             }
         }
-
-
-
     }
 }
