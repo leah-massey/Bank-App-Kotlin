@@ -23,9 +23,7 @@ class BankAccountServiceTest {
     inner class CreateNewUser {
         @Test
         fun `returns a response containing the account number of the newly created user`() {
-
             val userDetails = listOf("Carlos", "Alcaraz")
-
             val actual: CreateAccountResult = bankAccountService.createNewAccount(userDetails)
 
             assertEquals(AccountCreationSuccess(10000), actual)
@@ -45,8 +43,4 @@ class BankAccountServiceTest {
             assertEquals(DepositSuccess, actual)
         }
     }
-
-
-
-
 }
