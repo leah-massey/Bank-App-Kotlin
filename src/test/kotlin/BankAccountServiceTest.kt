@@ -7,6 +7,7 @@ import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountRepository
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
@@ -73,7 +74,14 @@ class BankAccountServiceTest {
             assertEquals(InvalidWithdrawalRequest("Invalid input format"), actual)
         }
 
-        // TODO if insufficient funds
+        @Test
+        fun `GIVEN insufficient funds, THEN InsufficientFunds is returned`() {
+            val userDetails = listOf("Carlos", "Alcaraz")
+            bankAccountService.createNewAccount(userDetails)
+            val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
+
+            assertEquals(InsufficientFunds("Insufficient funds"), actual)
+        }
     }
 
 }

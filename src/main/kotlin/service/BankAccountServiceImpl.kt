@@ -1,6 +1,7 @@
 package service
 
 import InputValidation
+import models.AccountNumber
 import models.UserName
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
@@ -9,6 +10,7 @@ import ports.ResultTypes.DepositAccountNotFound
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.ValidationError
@@ -71,12 +73,18 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val amount = amountString.toDoubleOrNull()
         val accountNumber = accountNumberString.toIntOrNull()
 
-        if( accountNumber != null && repository.accountExists(accountNumber)) {
-            repository.withdraw(amount!!, accountNumber)
-            return WithdrawalSuccess("Withdrawal successful")
-        } else {
+        if (accountNumber == null || !repository.accountExists(accountNumber)) {
             return WithdrawalAccountNotFound("Withdrawal account not found")
+        } else if (!withdrawalFundsAvailable(amount!!, accountNumber)) {
+            return InsufficientFunds("Insufficient funds")
+        } else {
+            repository.withdraw(amount, accountNumber)
+            return WithdrawalSuccess("Withdrawal successful")
         }
+    }
 
+    private fun withdrawalFundsAvailable(withdrawalAmount: Double, accountNumber: AccountNumber): Boolean {
+        val balance = repository.find(accountNumber)?.balance
+        return (balance != null && balance >= withdrawalAmount)
     }
 }
