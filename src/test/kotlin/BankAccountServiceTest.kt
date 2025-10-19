@@ -11,6 +11,7 @@ import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidWithdrawalRequest
+import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementSuccess
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
@@ -116,6 +117,12 @@ class BankAccountServiceTest {
             val statement = bankAccountService.getStatement(listOf("10000"))
 
             assertEquals(StatementSuccess(mutableListOf(Pair("new account", 0.0), Pair("deposit 10.0", 10.00))), statement)
+        }
+
+        @Test
+        fun `GIVEN account does not exist, THEN StatementAccountNotFound message is returned`() {
+            val statement = bankAccountService.getStatement(listOf("10000"))
+            assertEquals(StatementAccountNotFound("Statement account not found"), statement)
         }
     }
 

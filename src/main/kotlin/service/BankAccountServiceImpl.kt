@@ -18,6 +18,7 @@ import ports.ResultTypes.InvalidBalanceRequest
 import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.InvalidStatementRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
+import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementResult
 import ports.ResultTypes.StatementSuccess
 import ports.ResultTypes.ValidationError
@@ -106,6 +107,10 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
         if (accountNumber == null) {
             return InvalidStatementRequest("Invalid input format")
+        }
+
+        if (!repository.accountExists(accountNumber)) {
+            return StatementAccountNotFound("Statement account not found")
         }
 
         val statement = repository.statement(accountNumber)
