@@ -43,11 +43,11 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
             return InvalidDepositRequest("Your input does not have the correct format")
         }
 
-        val amount = amountString.toDouble()
-        val accountNumber = accountNumberString.toInt()
+        val amount = amountString.toDoubleOrNull()
+        val accountNumber = accountNumberString.toIntOrNull()
 
-        if ( repository.accountExists(accountNumber)) {
-            repository.deposit(amount, accountNumber)
+        if ( accountNumber != null && repository.accountExists(accountNumber)) {
+            repository.deposit(amount!!, accountNumber)
             return DepositSuccess("Deposit successful")
         } else {
             return DepositAccountNotFound("The provided account does not exist")

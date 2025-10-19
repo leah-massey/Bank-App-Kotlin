@@ -1,13 +1,11 @@
 package controller
 
-import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankingController
-import ports.ResultTypes.DepositAccountNotFound
-import ports.ResultTypes.DepositSuccess
-import ports.ResultTypes.InvalidDepositRequest
 import ports.UserInputProvider
-import ports.ResultTypes.ValidationError
+import ports.commands.Command
+import ports.commands.DepositCommand
+import ports.commands.NewAccountCommand
 
 class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
     BankingController {
@@ -16,40 +14,24 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
         println("Welcome to the Bank CLI!")
         println("NewAccount [FirstName] [LastName] -> creates new account")
 
+        val newAccountCommand = NewAccountCommand(bankAccountService)
+        val depositCommand = DepositCommand(bankAccountService)
+
+        var commandMap: Map<String, Command> = mapOf(
+            "newaccount" to newAccountCommand,
+            "deposit" to depositCommand
+        )
+
         while (true) {
             print("> ")
             val processedUserInput = userInput.readLine().trim().lowercase().split(" ")
             val command = processedUserInput.first()
             val commandDetails = processedUserInput.drop(1)
 
-            when {
-                (command == "newaccount") -> {
-                    val result = bankAccountService.createNewAccount(commandDetails)
-                    when (result) {
-                        is AccountCreationSuccess -> {
-                            println(result.accountNumber)
-                        }
-                        is ValidationError -> {
-                            println(result.message)
-                        }
-                    }
-                }
-                (command == "deposit") -> {
-                    val result = bankAccountService.depositMoney(commandDetails)
-                    when (result) {
-                        is DepositSuccess -> {
-                            println(result.message)
-                        }
-                        is DepositAccountNotFound -> {
-                            println(result.message)
-                        }
-                        is InvalidDepositRequest -> {
-                            println(result.message)
-                        }
-                    }
-                }
-                (command == "quit") -> break
-                else -> println("I didn't quite get that, please try again")
+            when (commandMap[command]) {
+                newAccountCommand -> newAccountCommand.execute(commandDetails)
+                depositCommand -> depositCommand.execute(commandDetails)
+                null -> if (command == "quit") break else println("I didn't quite get that, please try again")
             }
         }
     }
