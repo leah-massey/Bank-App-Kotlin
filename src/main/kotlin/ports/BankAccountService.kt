@@ -4,5 +4,5 @@ import models.AccountNumber
 import models.UserName
 
 interface BankAccountService {
-    fun createNewAccount(userName: UserName): AccountNumber
+    fun createNewAccount(userDetails: List<String>): CreateAccountResult
 }

@@ -4,7 +4,9 @@ import models.AccountNumber
 import models.UserName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import ports.AccountCreationSuccess
 import ports.BankAccountRepository
+import ports.CreateAccountResult
 import kotlin.test.assertEquals
 
 class BankAccountServiceTest {
@@ -14,13 +16,14 @@ class BankAccountServiceTest {
     @Nested
     inner class CreateNewUser {
         @Test
-        fun `returns the account number of the newly created user`() {
-            val mockBankAccountRepository: BankAccountRepository = BankAccountRepositoryLocal()
-            val bankAccountDomain = BankAccountServiceImpl(mockBankAccountRepository)
-            val userName = UserName("Carlos", "Alcaraz")
+        fun `returns a response containing the account number of the newly created user`() {
+            val bankAccountRepository: BankAccountRepository = BankAccountRepositoryLocal()
+            val bankAccountService = BankAccountServiceImpl(bankAccountRepository)
+            val userDetails = listOf("Carlos", "Alcaraz")
 
-            val accountNumber: AccountNumber = bankAccountDomain.createNewAccount(userName)
-            assertEquals(10000, accountNumber)
+            val actual: CreateAccountResult = bankAccountService.createNewAccount(userDetails)
+
+            assertEquals(AccountCreationSuccess(10000), actual)
         }
     }
 
