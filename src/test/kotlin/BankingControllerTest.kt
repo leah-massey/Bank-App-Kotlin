@@ -1,6 +1,7 @@
 import adapters.BankAccountRepositoryLocal
 import controller.BankingControllerImpl
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import service.BankAccountServiceImpl
 import java.io.ByteArrayOutputStream
@@ -56,23 +57,46 @@ class BankingControllerTest {
         }
     }
 
-    @Test
-    fun `GIVEN a valid deposit request, THEN a success message is logged to the console`() {
-        val userInputProvider = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "quit"))
-        val bankingController = BankingControllerImpl(bankAccountService, userInputProvider)
+    @Nested
+    inner class Deposit {
+        @Test
+        fun `GIVEN a valid deposit request, THEN a success message is logged to the console`() {
+            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
 
-        val outputStream = ByteArrayOutputStream()
-        val printStream = PrintStream(outputStream, true, "UTF-8")
-        val originalOut = System.out
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
 
-        try{
-            System.setOut(PrintStream(outputStream))
-            bankingController.startBanking()
-            printStream.flush()
-            val output = outputStream.toString()
-            assertTrue(output.contains("Deposit successful"))
-        } finally{
-            System.setOut(originalOut)
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("Deposit successful"))
+            } finally{
+                System.setOut(originalOut)
+            }
+        }
+
+        @Test
+        fun `GIVEN a deposit request for an account that does not exist, THEN an error message is logged to the console`() {
+            val userInput = FakeUserInputProvider(listOf("deposit 10 10000", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
+
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
+
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("The provided account does not exist"))
+            } finally{
+                System.setOut(originalOut)
+            }
         }
     }
 
