@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountRepository
+import ports.ResultTypes.BalanceAccountNotFound
 import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
@@ -94,6 +95,13 @@ class BankAccountServiceTest {
             val actual = bankAccountService.getBalance(listOf("10000"))
 
             assertEquals(BalanceSuccess("0.0"), actual)
+        }
+
+        @Test
+        fun `GIVEN account does not exist, THEN BalanceAccountNotFound returned`() {
+            val actual = bankAccountService.getBalance(listOf("10000"))
+
+            assertEquals(BalanceAccountNotFound("Balance account not found"), actual)
         }
 
     }

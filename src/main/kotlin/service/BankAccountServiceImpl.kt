@@ -6,6 +6,7 @@ import models.UserName
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankAccountRepository
+import ports.ResultTypes.BalanceAccountNotFound
 import ports.ResultTypes.BalanceResult
 import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.DepositAccountNotFound
@@ -86,6 +87,10 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
         if (accountNumber == null) {
             return InvalidBalanceRequest("Invalid input format")
+        }
+
+        if (!repository.accountExists(accountNumber)) {
+            return BalanceAccountNotFound("Balance account not found")
         }
 
         val balance = repository.balance(accountNumber)
