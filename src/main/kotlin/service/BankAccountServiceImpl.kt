@@ -6,11 +6,14 @@ import models.UserName
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankAccountRepository
+import ports.ResultTypes.BalanceResult
+import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.DepositAccountNotFound
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
+import ports.ResultTypes.InvalidBalanceRequest
 import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.ValidationError
@@ -76,6 +79,17 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
         repository.withdraw(amount, accountNumber)
         return WithdrawalSuccess("Withdrawal successful")
+    }
+
+    override fun getBalance(balanceDetails: List<String>): BalanceResult {
+        val accountNumber = balanceDetails.getOrNull(0)?.toIntOrNull()
+
+        if (accountNumber == null) {
+            return InvalidBalanceRequest("Invalid input format")
+        }
+
+        val balance = repository.balance(accountNumber)
+        return BalanceSuccess(balance.toString())
     }
 
     private fun withdrawalFundsAvailable(withdrawalAmount: Double, accountNumber: AccountNumber): Boolean {

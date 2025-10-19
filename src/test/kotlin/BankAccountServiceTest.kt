@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountRepository
+import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
@@ -82,6 +83,19 @@ class BankAccountServiceTest {
 
             assertEquals(InsufficientFunds("Insufficient funds"), actual)
         }
+    }
+
+    @Nested
+    inner class Balance {
+        @Test
+        fun `GIVEN account exists, THEN balance returned`() {
+            val userDetails = listOf("Carlos", "Alcaraz")
+            bankAccountService.createNewAccount(userDetails)
+            val actual = bankAccountService.getBalance(listOf("10000"))
+
+            assertEquals(BalanceSuccess("0.0"), actual)
+        }
+
     }
 
 }
