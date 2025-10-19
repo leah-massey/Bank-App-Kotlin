@@ -37,4 +37,16 @@ class BankAccountRepositoryTest {
 
         assertEquals(10.0, balance)
     }
+
+    @Test
+    fun `a withdrawal can be made from an account`() {
+        val userName = UserName("Jasmine", "Paulini")
+        bankAccountRepository.create(userName)
+        bankAccountRepository.deposit(10.00, 10000)
+        bankAccountRepository.withdraw(7.00, 10000)
+
+        val balance = bankAccountRepository.find(10000)?.balance
+
+        assertEquals(3.0, balance)
+    }
 }

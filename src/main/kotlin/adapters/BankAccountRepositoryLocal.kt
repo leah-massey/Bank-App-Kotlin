@@ -18,7 +18,6 @@ class BankAccountRepositoryLocal: BankAccountRepository {
     }
 
     override fun deposit(amount: Double, accountNumber: AccountNumber) {
-        // TODO check account exists should happen in service layer
         val account = find(accountNumber)
 
         if (account != null ) {
@@ -29,12 +28,21 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         }
     }
 
+    override fun withdraw(amount: Double, accountNumber: AccountNumber) {
+        val account = find(accountNumber)
+
+        if(account != null) {
+            val existingBalance = account.balance
+            val newBalance = existingBalance - amount
+            val updatedAccount = account.copy(balance = newBalance)
+
+            repository[accountNumber] = updatedAccount
+        }
+    }
+
     override fun clear() {
        repository.clear()
     }
-
-
-    // TODO accountExist = repo.containsKey
 
     override fun find(accountNumber: AccountNumber): AccountDetails? {
         return repository.get(accountNumber)
