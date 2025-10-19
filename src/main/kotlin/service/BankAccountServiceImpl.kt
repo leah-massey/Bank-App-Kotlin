@@ -99,7 +99,7 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
     }
 
     private fun withdrawalFundsAvailable(withdrawalAmount: Double, accountNumber: AccountNumber): Boolean {
-        val balance = repository.find(accountNumber)?.balance
+        val balance = repository.balance(accountNumber)
         return (balance != null && balance >= withdrawalAmount)
     }
 }

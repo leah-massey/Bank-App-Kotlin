@@ -33,7 +33,7 @@ class BankAccountRepositoryTest {
         val userName = UserName("Jasmine", "Paulini")
         bankAccountRepository.create(userName)
         bankAccountRepository.deposit(10.0, 10000)
-        val balance = bankAccountRepository.find(10000)?.balance
+        val balance = bankAccountRepository.balance(10000)
 
         assertEquals(10.0, balance)
     }
@@ -45,7 +45,7 @@ class BankAccountRepositoryTest {
         bankAccountRepository.deposit(10.00, 10000)
         bankAccountRepository.withdraw(7.00, 10000)
 
-        val balance = bankAccountRepository.find(10000)?.balance
+        val balance = bankAccountRepository.balance(10000)
 
         assertEquals(3.0, balance)
     }
@@ -59,4 +59,15 @@ class BankAccountRepositoryTest {
         val balance = bankAccountRepository.balance(10000)
         assertEquals(10.00, balance)
     }
+
+//    @Test
+//    fun `returns a list of transactions`() {
+//        val userName = UserName("Jasmine", "Paulini")
+//        bankAccountRepository.create(userName)
+//        bankAccountRepository.deposit(10.00, 10000)
+//        bankAccountRepository.withdraw(7.00, 10000)
+//
+//        val statement = bankAccountRepository.statement(10000)
+//        assertEquals(listOf(Pair("new account", 0.0), Pair("deposit 10", 10.00), Pair("withdraw 7", 3.00)), statement)
+//    }
 }

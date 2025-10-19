@@ -11,7 +11,7 @@ class BankAccountRepositoryLocal: BankAccountRepository {
 
     override fun create(userName: UserName): AccountNumber {
         val newAccountNumber = generateNewAccountNumber()
-        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, balance = 0.0)
+        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, transactions = mutableListOf(Pair("new account", 0.0)))
 
         repository[newAccountNumber] = newAccountDetails
         return newAccountNumber
@@ -21,9 +21,13 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         val account = find(accountNumber)
 
         if (account != null ) {
-            val existingBalance = account.balance
+            val transactions = account.transactions
+            val existingBalance = transactions[account.transactions.size -1].second
             val newBalance = existingBalance + amount
-            val updatedAccount = account.copy(balance = newBalance)
+            val newTransaction = Pair("deposit $amount", newBalance)
+            transactions.add(newTransaction)
+
+            val updatedAccount = account.copy(transactions = transactions)
             repository[accountNumber] = updatedAccount
         }
     }
@@ -32,16 +36,26 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         val account = find(accountNumber)
 
         if(account != null) {
-            val existingBalance = account.balance
+            val transactions = account.transactions
+            val existingBalance = transactions[account.transactions.size -1].second
             val newBalance = existingBalance - amount
-            val updatedAccount = account.copy(balance = newBalance)
+            val newTransaction = Pair("withdraw $amount", newBalance)
+            transactions.add(newTransaction)
+
+            val updatedAccount = account.copy(transactions = transactions)
 
             repository[accountNumber] = updatedAccount
         }
     }
 
     override fun balance(accountNumber: AccountNumber): Double? {
-        return find(accountNumber)?.balance
+        val account = find(accountNumber)
+
+        return account?.transactions[account.transactions.size -1]?.second
+    }
+
+    override fun statement(accountNumber: AccountNumber): List<Pair<String, Double>> {
+        TODO("Not yet implemented")
     }
 
     override fun clear() {

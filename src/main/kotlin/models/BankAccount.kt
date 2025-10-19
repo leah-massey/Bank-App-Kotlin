@@ -5,7 +5,7 @@ typealias AccountNumber = Int
 data class AccountDetails(
     val accountNumber: AccountNumber,
     val userName: UserName,
-    var balance: Double,
+    var transactions: MutableList<Pair<String, Double>>
 )
 
 typealias BankAccounts =  MutableMap<AccountNumber, AccountDetails>
