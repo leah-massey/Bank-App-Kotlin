@@ -10,6 +10,7 @@ import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InvalidDepositRequest
+import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.ValidationError
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalResult
@@ -58,7 +59,14 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
     }
 
     override fun withdrawMoney(withdrawalDetails: List<String>): WithdrawalResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(withdrawalDetails, 2)
+        val depositIsValidCurrencyFormat: Boolean = inputValidation.isValidCurrencyFormat(withdrawalDetails[0])
+
         val (amountString, accountNumberString) = withdrawalDetails
+
+        if (!isValidInputLength || !depositIsValidCurrencyFormat) {
+            return InvalidWithdrawalRequest("Invalid input format")
+        }
 
         val amount = amountString.toDoubleOrNull()
         val accountNumber = accountNumberString.toIntOrNull()
