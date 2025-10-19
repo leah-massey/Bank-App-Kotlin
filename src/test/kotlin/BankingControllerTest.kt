@@ -46,7 +46,7 @@ class BankingControllerTest {
             bankingController.startBanking()
             printStream.flush()
             val output = outputStream.toString()
-            assertTrue(output.contains("I didn't quite get that, please try again"))
+            assertTrue(output.contains("Incorrect format, please try again"))
         } finally{
             System.setOut(originalOut)
         }

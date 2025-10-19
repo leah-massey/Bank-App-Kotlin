@@ -1,5 +1,6 @@
 package controller
 
+import InputValidation
 import models.UserName
 import ports.BankAccountService
 import ports.BankingController
@@ -17,19 +18,24 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
             val processedUserInput = userInput.readLine().trim().lowercase().split(" ")
             val command = processedUserInput.first()
 
+            val inputValidation = InputValidation()
+
             when {
                 (command == "newaccount") -> {
-//                    isValidInputLength(processedUserInput)
-                    val (_, firstName, lastName) = processedUserInput
+                    if (inputValidation.isValidInputLength(processedUserInput, 3)) {
+                        val (_, firstName, lastName) = processedUserInput
 
-                    println(
-                        bankAccountService.createNewAccount(
-                            UserName(
-                                firstName,
-                                lastName
+                        println(
+                            bankAccountService.createNewAccount(
+                                UserName(
+                                    firstName,
+                                    lastName
+                                )
                             )
                         )
-                    )
+                    } else {
+                        println("Incorrect format, please try again")
+                    }
                 }
                 (command == "quit") -> break
                 else -> println("I didn't quite get that, please try again")
