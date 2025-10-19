@@ -1,10 +1,10 @@
 package controller
 
-import ports.AccountCreationSuccess
+import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankingController
 import ports.UserInputProvider
-import ports.ValidationError
+import ports.ResultTypes.ValidationError
 
 class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
     BankingController {

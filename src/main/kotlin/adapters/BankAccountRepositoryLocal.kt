@@ -33,10 +33,15 @@ class BankAccountRepositoryLocal: BankAccountRepository {
        repository.clear()
     }
 
+
     // TODO accountExist = repo.containsKey
 
     override fun find(accountNumber: AccountNumber): AccountDetails? {
         return repository.get(accountNumber)
+    }
+
+    override fun accountExists(accountNumber: AccountNumber): Boolean {
+        return repository.containsKey(accountNumber)
     }
 
     private fun generateNewAccountNumber(): AccountNumber {

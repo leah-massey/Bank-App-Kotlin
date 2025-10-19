@@ -1,6 +1,6 @@
-package ports
+package ports.ResultTypes
 
-interface CreateAccountResult {
+sealed interface CreateAccountResult {
 }
 
 data class AccountCreationSuccess(val accountNumber : Int): CreateAccountResult

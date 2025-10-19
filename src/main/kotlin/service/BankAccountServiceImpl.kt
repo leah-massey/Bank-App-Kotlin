@@ -3,11 +3,14 @@ package service
 import InputValidation
 import models.AccountNumber
 import models.UserName
-import ports.AccountCreationSuccess
+import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankAccountRepository
-import ports.CreateAccountResult
-import ports.ValidationError
+import ports.ResultTypes.AccountNotFound
+import ports.ResultTypes.CreateAccountResult
+import ports.ResultTypes.DepositResult
+import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.ValidationError
 
 class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccountService {
 
@@ -26,6 +29,18 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
             return AccountCreationSuccess(accountNumber)
         } else {
             return ValidationError("Incorrect format, please try again")
+        }
+    }
+
+    override fun depositMoney(amount: Int, accountNumber: AccountNumber): DepositResult {
+
+        // TODO validation
+
+        if (repository.accountExists(accountNumber)) {
+            repository.deposit(amount, accountNumber)
+            return DepositSuccess
+        } else {
+            return AccountNotFound("The provided account does not exist")
         }
     }
 }
