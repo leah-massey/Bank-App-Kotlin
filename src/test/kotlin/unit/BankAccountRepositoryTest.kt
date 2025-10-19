@@ -32,7 +32,7 @@ class BankAccountRepositoryTest {
     fun `a deposit is made to an account`() {
         val userName = UserName("Jasmine", "Paulini")
         bankAccountRepository.create(userName)
-        bankAccountRepository.deposit(10, 10000)
+        bankAccountRepository.deposit(10.0, 10000)
         val balance = bankAccountRepository.find(10000)?.balance
 
         assertEquals(10, balance)

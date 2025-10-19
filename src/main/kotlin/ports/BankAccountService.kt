@@ -6,5 +6,5 @@ import ports.ResultTypes.DepositResult
 
 interface BankAccountService {
     fun createNewAccount(userDetails: List<String>): CreateAccountResult
-    fun depositMoney(amount: Int, accountNumber: AccountNumber): DepositResult
+    fun depositMoney(depositDetails: List<String>): DepositResult
 }

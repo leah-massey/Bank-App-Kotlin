@@ -11,13 +11,13 @@ class BankAccountRepositoryLocal: BankAccountRepository {
 
     override fun create(userName: UserName): AccountNumber {
         val newAccountNumber = generateNewAccountNumber()
-        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, balance = 0)
+        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, balance = 0.0)
 
         repository[newAccountNumber] = newAccountDetails
         return newAccountNumber
     }
 
-    override fun deposit(amount: Int, accountNumber: AccountNumber) {
+    override fun deposit(amount: Double, accountNumber: AccountNumber) {
         // TODO check account exists should happen in service layer
         val account = find(accountNumber)
 

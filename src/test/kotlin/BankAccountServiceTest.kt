@@ -38,7 +38,7 @@ class BankAccountServiceTest {
         fun `deposits money when provided bank account exists`() {
             val userDetails = listOf("Carlos", "Alcaraz")
             bankAccountService.createNewAccount(userDetails)
-            val actual = bankAccountService.depositMoney(10, 10000)
+            val actual = bankAccountService.depositMoney(listOf("10.00", "10000"))
 
             assertEquals(DepositSuccess, actual)
         }

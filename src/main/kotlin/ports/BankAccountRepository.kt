@@ -8,7 +8,7 @@ import models.UserName
 interface BankAccountRepository {
     fun create(userName: UserName): AccountNumber
     fun find(accountNumber: AccountNumber): AccountDetails?
-    fun deposit(amount: Int, accountNumber: AccountNumber)
+    fun deposit(amount: Double, accountNumber: AccountNumber)
     fun clear()
     fun accountExists(accountNumber: AccountNumber): Boolean
 }

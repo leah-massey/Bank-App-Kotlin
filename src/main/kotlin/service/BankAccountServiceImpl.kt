@@ -1,15 +1,15 @@
 package service
 
 import InputValidation
-import models.AccountNumber
 import models.UserName
 import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountService
 import ports.BankAccountRepository
-import ports.ResultTypes.AccountNotFound
+import ports.ResultTypes.DepositAccountNotFound
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.ValidationError
 
 class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccountService {
@@ -32,15 +32,57 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         }
     }
 
-    override fun depositMoney(amount: Int, accountNumber: AccountNumber): DepositResult {
+    override fun depositMoney(depositDetails: List<String>): DepositResult {
 
-        // TODO validation
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositDetails, 2)
+        val depositIsValidCurrencyFormat: Boolean = inputValidation.isValidCurrencyFormat(depositDetails[0])
 
-        if (repository.accountExists(accountNumber)) {
+        val (amountString, accountNumberString) = depositDetails
+        val amount = amountString.toDouble()
+        val accountNumber = accountNumberString.toInt()
+
+        if (!isValidInputLength || !depositIsValidCurrencyFormat) {
+            return InvalidDepositRequest("Your input does not have the correct format")
+        }
+
+        if ( repository.accountExists(accountNumber)) {
             repository.deposit(amount, accountNumber)
             return DepositSuccess
         } else {
-            return AccountNotFound("The provided account does not exist")
+            return DepositAccountNotFound("The provided account does not exist")
         }
+
+
+
+//        if(isValidInputLength) {
+//
+//            val (amountString, accountNumberString) = depositDetails
+//
+//            val amount = amountString.toDouble()
+//            val accountNumber = accountNumberString.toInt()
+//
+//
+//            val accountExists: Boolean = repository.accountExists(accountNumber.toInt())
+//
+//            if (accountExists) {
+//                repository.deposit(amount.toInt(), )
+//            }
+//
+//
+//        }
+//
+
+
+
+
+//        if (repository.accountExists(accountNumber)) {
+//            repository.deposit(amount, accountNumber)
+//            return DepositSuccess
+//        } else {
+//            return AccountNotFound("The provided account does not exist")
+//        }
+
+        return DepositAccountNotFound("The provided account does not exist")
+
     }
 }

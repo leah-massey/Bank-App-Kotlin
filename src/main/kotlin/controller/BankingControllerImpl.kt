@@ -31,6 +31,9 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
                         }
                     }
                 }
+                (command == "deposit") -> {
+                    val result = bankAccountService.depositMoney(depositDetails = commandDetails)
+                }
                 (command == "quit") -> break
                 else -> println("I didn't quite get that, please try again")
             }

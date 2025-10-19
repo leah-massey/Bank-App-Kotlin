@@ -5,4 +5,8 @@ class InputValidation {
         return (input.size == requiredLength)
     }
 
+    fun isValidCurrencyFormat(amount: String): Boolean {
+        return amount.toDoubleOrNull() != null
+    }
+
 }
