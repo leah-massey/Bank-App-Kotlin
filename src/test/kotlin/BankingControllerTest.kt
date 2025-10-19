@@ -206,5 +206,26 @@ class BankingControllerTest {
             }
 
         }
+
+        @Test
+        fun `GIVEN a balance request for an invalid account number, THEN an error message is logged to the console`() {
+            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "balance 10002", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
+
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
+
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("Balance account not found"))
+            } finally{
+                System.setOut(originalOut)
+            }
+
+        }
     }
 }
