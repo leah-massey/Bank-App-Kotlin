@@ -11,6 +11,7 @@ import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.ValidationError
+import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalResult
 import ports.ResultTypes.WithdrawalSuccess
 
@@ -62,7 +63,12 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val amount = amountString.toDoubleOrNull()
         val accountNumber = accountNumberString.toIntOrNull()
 
-        repository.withdraw(amount!!, accountNumber!!)
-        return WithdrawalSuccess("Withdrawal successful")
+        if( accountNumber != null && repository.accountExists(accountNumber)) {
+            repository.withdraw(amount!!, accountNumber)
+            return WithdrawalSuccess("Withdrawal successful")
+        } else {
+            return WithdrawalAccountNotFound("Withdrawal account not found")
+        }
+
     }
 }

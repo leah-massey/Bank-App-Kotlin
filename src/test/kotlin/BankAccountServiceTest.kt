@@ -7,6 +7,7 @@ import ports.ResultTypes.AccountCreationSuccess
 import ports.BankAccountRepository
 import ports.ResultTypes.CreateAccountResult
 import ports.ResultTypes.DepositSuccess
+import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
 import kotlin.test.assertEquals
 
@@ -57,6 +58,12 @@ class BankAccountServiceTest {
             val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
 
             assertEquals(WithdrawalSuccess("Withdrawal successful"), actual)
+        }
+
+        @Test
+        fun `does not withdraw money if account does not exist`() {
+            val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
+            assertEquals(WithdrawalAccountNotFound("Withdrawal account not found"), actual)
         }
     }
 
