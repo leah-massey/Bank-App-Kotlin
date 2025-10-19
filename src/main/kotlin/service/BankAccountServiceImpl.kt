@@ -11,6 +11,8 @@ import ports.ResultTypes.DepositResult
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InvalidDepositRequest
 import ports.ResultTypes.ValidationError
+import ports.ResultTypes.WithdrawalResult
+import ports.ResultTypes.WithdrawalSuccess
 
 class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccountService {
 
@@ -52,5 +54,15 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         } else {
             return DepositAccountNotFound("The provided account does not exist")
         }
+    }
+
+    override fun withdrawMoney(withdrawalDetails: List<String>): WithdrawalResult {
+        val (amountString, accountNumberString) = withdrawalDetails
+
+        val amount = amountString.toDoubleOrNull()
+        val accountNumber = accountNumberString.toIntOrNull()
+
+        repository.withdraw(amount!!, accountNumber!!)
+        return WithdrawalSuccess("Withdrawal successful")
     }
 }
