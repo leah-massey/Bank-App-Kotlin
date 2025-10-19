@@ -3,6 +3,7 @@ package ports.commands
 import ports.BankAccountService
 import ports.ResultTypes.BalanceAccountNotFound
 import ports.ResultTypes.BalanceSuccess
+import ports.ResultTypes.InvalidBalanceRequest
 
 class BalanceCommand(val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {
@@ -13,6 +14,9 @@ class BalanceCommand(val bankAccountService: BankAccountService): Command {
                 println(result.message)
             }
             is BalanceAccountNotFound -> {
+                println(result.message)
+            }
+            is InvalidBalanceRequest -> {
                 println(result.message)
             }
         }

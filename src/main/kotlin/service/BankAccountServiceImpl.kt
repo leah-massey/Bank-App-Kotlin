@@ -83,9 +83,10 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
     }
 
     override fun getBalance(balanceDetails: List<String>): BalanceResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(balanceDetails, 1)
         val accountNumber = balanceDetails.getOrNull(0)?.toIntOrNull()
 
-        if (accountNumber == null) {
+        if (accountNumber == null || !isValidInputLength) {
             return InvalidBalanceRequest("Invalid input format")
         }
 
