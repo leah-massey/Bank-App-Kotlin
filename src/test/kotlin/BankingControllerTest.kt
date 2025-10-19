@@ -183,4 +183,28 @@ class BankingControllerTest {
 
         }
     }
+
+    @Nested
+    inner class Balance {
+        @Test
+        fun `GIVEN a valid balance request, THEN the provided account's balance is logged to the console`() {
+            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "balance 10000", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
+
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
+
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("10.0"))
+            } finally{
+                System.setOut(originalOut)
+            }
+
+        }
+    }
 }
