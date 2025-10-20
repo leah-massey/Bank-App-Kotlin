@@ -68,6 +68,6 @@ class BankAccountRepositoryTest {
         bankAccountRepository.withdraw(7.00, 10000)
 
         val statement = bankAccountRepository.statement(10000)
-        assertEquals(listOf(Pair("new account", 0.0), Pair("deposit 10.0", 10.00), Pair("withdraw 7.0", 3.00)), statement)
+        assertEquals(listOf(Pair(0.0, 0.0), Pair(10.0, 10.00), Pair(-7.0, 3.00)), statement)
     }
 }

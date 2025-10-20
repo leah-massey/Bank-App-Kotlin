@@ -117,7 +117,7 @@ class BankAccountServiceTest {
             bankAccountService.depositMoney(listOf("10.00", "10000"))
             val statement = bankAccountService.getStatement(listOf("10000"))
 
-            assertEquals(StatementSuccess(mutableListOf(Pair("new account", 0.0), Pair("deposit 10.0", 10.00))), statement)
+            assertEquals(StatementSuccess(mutableListOf(Pair(0.0, 0.0), Pair(10.0, 10.00))), statement)
         }
 
         @Test

@@ -11,7 +11,7 @@ class BankAccountRepositoryLocal: BankAccountRepository {
 
     override fun create(userName: UserName): AccountNumber {
         val newAccountNumber = generateNewAccountNumber()
-        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, transactions = mutableListOf(Pair("new account", 0.0)))
+        val newAccountDetails = AccountDetails(accountNumber = newAccountNumber, userName = userName, transactions = mutableListOf(Pair(0.0, 0.0)))
 
         repository[newAccountNumber] = newAccountDetails
         return newAccountNumber
@@ -24,7 +24,7 @@ class BankAccountRepositoryLocal: BankAccountRepository {
             val transactions = account.transactions
             val existingBalance = transactions[account.transactions.size -1].second
             val newBalance = existingBalance + amount
-            val newTransaction = Pair("deposit $amount", newBalance)
+            val newTransaction = Pair(amount, newBalance)
             transactions.add(newTransaction)
 
             val updatedAccount = account.copy(transactions = transactions)
@@ -39,7 +39,7 @@ class BankAccountRepositoryLocal: BankAccountRepository {
             val transactions = account.transactions
             val existingBalance = transactions[account.transactions.size -1].second
             val newBalance = existingBalance - amount
-            val newTransaction = Pair("withdraw $amount", newBalance)
+            val newTransaction = Pair(-amount, newBalance)
             transactions.add(newTransaction)
 
             val updatedAccount = account.copy(transactions = transactions)
@@ -54,7 +54,7 @@ class BankAccountRepositoryLocal: BankAccountRepository {
         return account?.transactions[account.transactions.size -1]?.second
     }
 
-    override fun statement(accountNumber: AccountNumber): List<Pair<String, Double>>? {
+    override fun statement(accountNumber: AccountNumber): List<Pair<Double, Double>>? {
         val account = find(accountNumber)
         return account?.transactions
     }

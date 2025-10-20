@@ -13,5 +13,5 @@ interface BankAccountRepository {
     fun accountExists(accountNumber: AccountNumber): Boolean
     fun withdraw(amount: Double, accountNumber: AccountNumber)
     fun balance(accountNumber: AccountNumber): Double?
-    fun statement(accountNumber: AccountNumber): List<Pair<String, Double>>?
+    fun statement(accountNumber: AccountNumber): List<Pair<Double, Double>>?
 }

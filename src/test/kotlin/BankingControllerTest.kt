@@ -252,7 +252,7 @@ class BankingControllerTest {
     inner class Statement {
         @Test
         fun `GIVEN a valid statement request, a formatted statement is returned`() {
-            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "statement 10000", "quit"))
+            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "withdraw 3 10000", "statement 10000", "quit"))
             val bankingController = BankingControllerImpl(bankAccountService, userInput)
 
             val outputStream = ByteArrayOutputStream()
@@ -264,7 +264,7 @@ class BankingControllerTest {
                 bankingController.startBanking()
                 printStream.flush()
                 val output = outputStream.toString()
-                assertTrue(output.contains("deposit 10"))
+                assertTrue(output.contains("-3.0"))
             } finally{
                 System.setOut(originalOut)
             }
