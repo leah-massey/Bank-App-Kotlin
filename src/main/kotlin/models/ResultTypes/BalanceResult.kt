@@ -1,6 +1,6 @@
 package models.ResultTypes
 
-interface BalanceResult {
+sealed interface BalanceResult {
 }
 
 data class BalanceSuccess(val message: String): BalanceResult
