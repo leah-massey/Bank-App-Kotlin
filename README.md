@@ -33,25 +33,20 @@ The program allows a bank teller to perform the following core operations:
 
 Follow these steps to set up and run the application on your local machine.
 
-1.  **Install Dependencies:**:
+1.  **Clone repository:**:
 
-// TODO
+`` git clone git@github.com:leah-massey/Bank-App-Kotlin.git ``
 
 2.  **Build and Run (Local CLI):**:
 
-    //TODO
+`` ./gradlew run ``
 
-
-
-The program will start, and you can then follow the instructions provided in the terminal.
-After quitting the program, it can be subsequently run again using the command:
-  // TODO
 
 3. **Run Tests:**:
 
-  ```bash
-    TODO
-   ```
+ `` ./gradlew test``
+
+ A report of the test results will be generated in the build/reports/tests/test/ directory.
 
 -----
 
