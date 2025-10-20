@@ -14,6 +14,7 @@ import ports.ResultTypes.InvalidStatementRequest
 import ports.ResultTypes.InvalidWithdrawalRequest
 import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementSuccess
+import ports.ResultTypes.ValidationError
 import ports.ResultTypes.WithdrawalAccountNotFound
 import ports.ResultTypes.WithdrawalSuccess
 import kotlin.test.assertEquals
@@ -38,7 +39,13 @@ class BankAccountServiceTest {
             assertEquals(AccountCreationSuccess(10000), actual)
         }
 
-        // TODO test for invalid request
+        @Test
+        fun `GIVEN an invalid request, THEN returns ValidationError response`() {
+            val userDetails = listOf("Carlos", "Alcaraz", "10")
+            val actual: CreateAccountResult = bankAccountService.createNewAccount(userDetails)
+
+            assertEquals(ValidationError("Invalid input format"), actual)
+        }
     }
 
     @Nested
