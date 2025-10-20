@@ -1,6 +1,7 @@
 package ports.commands
 
 import ports.BankAccountService
+import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementSuccess
 
 class StatementCommand(val bankAccountService: BankAccountService): Command {
@@ -17,6 +18,9 @@ class StatementCommand(val bankAccountService: BankAccountService): Command {
                         println("balance: ${transaction.second}\n")
                     }
                 }
+            }
+            is StatementAccountNotFound -> {
+                println(result.message)
             }
         }
     }
