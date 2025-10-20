@@ -247,4 +247,27 @@ class BankingControllerTest {
             }
         }
     }
+
+    @Nested
+    inner class Statement {
+        @Test
+        fun `GIVEN a valid statement request, a formatted statement is returned`() {
+            val userInput = FakeUserInputProvider(listOf("NewAccount Coco Gauff", "deposit 10 10000", "statement 10000", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
+
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
+
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("deposit 10"))
+            } finally{
+                System.setOut(originalOut)
+            }
+        }
+    }
 }
