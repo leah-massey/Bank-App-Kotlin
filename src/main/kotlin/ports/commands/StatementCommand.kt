@@ -1,6 +1,7 @@
 package ports.commands
 
 import ports.BankAccountService
+import ports.ResultTypes.InvalidStatementRequest
 import ports.ResultTypes.StatementAccountNotFound
 import ports.ResultTypes.StatementSuccess
 
@@ -20,6 +21,9 @@ class StatementCommand(val bankAccountService: BankAccountService): Command {
                 }
             }
             is StatementAccountNotFound -> {
+                println(result.message)
+            }
+            is InvalidStatementRequest -> {
                 println(result.message)
             }
         }

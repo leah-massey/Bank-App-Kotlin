@@ -271,6 +271,26 @@ class BankingControllerTest {
         }
 
         @Test
+        fun `GIVEN a statement request with invalid format, THEN an error message is logged to the console`() {
+            val userInput = FakeUserInputProvider(listOf("statement 10003 10", "quit"))
+            val bankingController = BankingControllerImpl(bankAccountService, userInput)
+
+            val outputStream = ByteArrayOutputStream()
+            val printStream = PrintStream(outputStream, true, "UTF-8")
+            val originalOut = System.out
+
+            try{
+                System.setOut(PrintStream(outputStream))
+                bankingController.startBanking()
+                printStream.flush()
+                val output = outputStream.toString()
+                assertTrue(output.contains("Invalid input format"))
+            } finally{
+                System.setOut(originalOut)
+            }
+        }
+
+        @Test
         fun `GIVEN a statement request for an account that does not exist, THEN an error message is logged to the console`() {
             val userInput = FakeUserInputProvider(listOf("statement 10003", "quit"))
             val bankingController = BankingControllerImpl(bankAccountService, userInput)
@@ -289,6 +309,7 @@ class BankingControllerTest {
                 System.setOut(originalOut)
             }
         }
+
 
     }
 }
