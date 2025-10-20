@@ -1,10 +1,10 @@
 package ports
 
-import ports.ResultTypes.BalanceResult
-import ports.ResultTypes.CreateAccountResult
-import ports.ResultTypes.DepositResult
-import ports.ResultTypes.StatementResult
-import ports.ResultTypes.WithdrawalResult
+import models.ResultTypes.BalanceResult
+import models.ResultTypes.CreateAccountResult
+import models.ResultTypes.DepositResult
+import models.ResultTypes.StatementResult
+import models.ResultTypes.WithdrawalResult
 
 interface BankAccountService {
     fun createNewAccount(userInputDetails: List<String>): CreateAccountResult

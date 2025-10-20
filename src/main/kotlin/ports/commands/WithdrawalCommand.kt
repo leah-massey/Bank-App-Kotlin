@@ -1,9 +1,9 @@
 package ports.commands
 
 import ports.BankAccountService
-import ports.ResultTypes.InvalidWithdrawalRequest
-import ports.ResultTypes.WithdrawalAccountNotFound
-import ports.ResultTypes.WithdrawalSuccess
+import models.ResultTypes.InvalidWithdrawalRequest
+import models.ResultTypes.WithdrawalAccountNotFound
+import models.ResultTypes.WithdrawalSuccess
 
 class WithdrawalCommand(val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {

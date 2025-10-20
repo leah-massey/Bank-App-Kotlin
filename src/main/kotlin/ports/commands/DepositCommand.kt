@@ -1,9 +1,9 @@
 package ports.commands
 
 import ports.BankAccountService
-import ports.ResultTypes.DepositAccountNotFound
-import ports.ResultTypes.DepositSuccess
-import ports.ResultTypes.InvalidDepositRequest
+import models.ResultTypes.DepositAccountNotFound
+import models.ResultTypes.DepositSuccess
+import models.ResultTypes.InvalidDepositRequest
 
 class DepositCommand(val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {

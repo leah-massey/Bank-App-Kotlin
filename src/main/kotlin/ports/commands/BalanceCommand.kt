@@ -1,9 +1,9 @@
 package ports.commands
 
 import ports.BankAccountService
-import ports.ResultTypes.BalanceAccountNotFound
-import ports.ResultTypes.BalanceSuccess
-import ports.ResultTypes.InvalidBalanceRequest
+import models.ResultTypes.BalanceAccountNotFound
+import models.ResultTypes.BalanceSuccess
+import models.ResultTypes.InvalidBalanceRequest
 
 class BalanceCommand(val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {

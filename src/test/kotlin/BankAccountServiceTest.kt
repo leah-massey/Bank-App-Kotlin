@@ -3,21 +3,21 @@ import service.BankAccountServiceImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import ports.ResultTypes.AccountCreationSuccess
+import models.ResultTypes.AccountCreationSuccess
 import ports.BankAccountRepository
-import ports.ResultTypes.BalanceAccountNotFound
-import ports.ResultTypes.BalanceSuccess
-import ports.ResultTypes.CreateAccountResult
-import ports.ResultTypes.DepositAccountNotFound
-import ports.ResultTypes.DepositSuccess
-import ports.ResultTypes.InsufficientFunds
-import ports.ResultTypes.InvalidStatementRequest
-import ports.ResultTypes.InvalidWithdrawalRequest
-import ports.ResultTypes.StatementAccountNotFound
-import ports.ResultTypes.StatementSuccess
-import ports.ResultTypes.ValidationError
-import ports.ResultTypes.WithdrawalAccountNotFound
-import ports.ResultTypes.WithdrawalSuccess
+import models.ResultTypes.BalanceAccountNotFound
+import models.ResultTypes.BalanceSuccess
+import models.ResultTypes.CreateAccountResult
+import models.ResultTypes.DepositAccountNotFound
+import models.ResultTypes.DepositSuccess
+import models.ResultTypes.InsufficientFunds
+import models.ResultTypes.InvalidStatementRequest
+import models.ResultTypes.InvalidWithdrawalRequest
+import models.ResultTypes.StatementAccountNotFound
+import models.ResultTypes.StatementSuccess
+import models.ResultTypes.ValidationError
+import models.ResultTypes.WithdrawalAccountNotFound
+import models.ResultTypes.WithdrawalSuccess
 import kotlin.test.assertEquals
 
 class BankAccountServiceTest {

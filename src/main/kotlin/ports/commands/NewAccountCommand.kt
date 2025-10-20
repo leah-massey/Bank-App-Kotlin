@@ -1,8 +1,8 @@
 package ports.commands
 
 import ports.BankAccountService
-import ports.ResultTypes.AccountCreationSuccess
-import ports.ResultTypes.ValidationError
+import models.ResultTypes.AccountCreationSuccess
+import models.ResultTypes.ValidationError
 
 class NewAccountCommand( val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {

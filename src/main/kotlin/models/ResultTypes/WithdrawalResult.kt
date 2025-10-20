@@ -1,4 +1,4 @@
-package ports.ResultTypes
+package models.ResultTypes
 
 interface WithdrawalResult {
 }

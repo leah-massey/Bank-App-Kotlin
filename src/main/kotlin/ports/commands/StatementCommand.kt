@@ -1,9 +1,9 @@
 package ports.commands
 
 import ports.BankAccountService
-import ports.ResultTypes.InvalidStatementRequest
-import ports.ResultTypes.StatementAccountNotFound
-import ports.ResultTypes.StatementSuccess
+import models.ResultTypes.InvalidStatementRequest
+import models.ResultTypes.StatementAccountNotFound
+import models.ResultTypes.StatementSuccess
 
 class StatementCommand(val bankAccountService: BankAccountService): Command {
     override fun execute(details: List<String>) {

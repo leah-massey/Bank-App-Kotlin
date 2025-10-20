@@ -1,4 +1,4 @@
-package ports.ResultTypes
+package models.ResultTypes
 
 sealed interface DepositResult
 

@@ -1,6 +1,4 @@
-package ports.ResultTypes
-
-import javax.annotation.processing.Messager
+package models.ResultTypes
 
 interface BalanceResult {
 }
