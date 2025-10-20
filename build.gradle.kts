@@ -5,7 +5,7 @@ plugins {
 }
 
 application {
-    mainClass.set("org.example.BankingAppMainKt")
+    mainClass.set("BankingAppMainKt")
 }
 
 java {
