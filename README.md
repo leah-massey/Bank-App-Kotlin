@@ -39,7 +39,7 @@ Follow these steps to set up and run the application on your local machine.
 
 2.  **Build and Run (Local CLI):**:
 
-`` ./gradlew run ``
+`` ./gradlew run --console=plain ``
 
 
 3. **Run Tests:**:
