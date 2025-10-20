@@ -31,10 +31,9 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
     val inputValidation = InputValidation()
 
     override fun createNewAccount(userInputDetails: List<String>): CreateAccountResult {
+        val isValidInputLength: Boolean = inputValidation.isValidInputLength(userInputDetails, 2)
 
-        if (!inputValidation.isValidInputLength(userInputDetails, 2)) {
-            return ValidationError("Invalid input format")
-        }
+        if (!isValidInputLength) return ValidationError("Invalid input format")
 
         val (firstName, lastName) = userInputDetails
         val accountNumber = repository.create(
@@ -48,21 +47,15 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
 
     override fun depositMoney(depositInputDetails: List<String>): DepositResult {
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(depositInputDetails, 2)
-
         val amount = depositInputDetails.getOrNull(0)?.toDoubleOrNull()
         val accountNumber = depositInputDetails.getOrNull(1)?.toIntOrNull()
 
-        if (amount == null || accountNumber == null || !isValidInputLength) {
-            return InvalidDepositRequest("Invalid input format")
-        }
+        if (amount == null || accountNumber == null || !isValidInputLength) return InvalidDepositRequest("Invalid input format")
 
-        if (!repository.accountExists(accountNumber)) {
-            return DepositAccountNotFound("The provided account does not exist")
-        }
+        if (!repository.accountExists(accountNumber)) return DepositAccountNotFound("The provided account does not exist")
 
         repository.deposit(amount, accountNumber)
         return DepositSuccess("Deposit successful")
-
     }
 
     override fun withdrawMoney(withdrawalInputDetails: List<String>): WithdrawalResult {
@@ -70,17 +63,11 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val amount = withdrawalInputDetails.getOrNull(0)?.toDoubleOrNull()
         val accountNumber = withdrawalInputDetails.getOrNull(1)?.toIntOrNull()
 
-        if (accountNumber == null || amount == null || !isValidInputLength) {
-            return InvalidWithdrawalRequest("Invalid input format")
-        }
+        if (accountNumber == null || amount == null || !isValidInputLength) return InvalidWithdrawalRequest("Invalid input format")
 
-        if (!repository.accountExists(accountNumber)) {
-            return WithdrawalAccountNotFound("Withdrawal account not found")
-        }
+        if (!repository.accountExists(accountNumber)) return WithdrawalAccountNotFound("Withdrawal account not found")
 
-        if (!withdrawalFundsAvailable(amount, accountNumber)) {
-            return InsufficientFunds("Insufficient funds")
-        }
+        if (!withdrawalFundsAvailable(amount, accountNumber)) return InsufficientFunds("Insufficient funds")
 
         repository.withdraw(amount, accountNumber)
         return WithdrawalSuccess("Withdrawal successful")
@@ -90,13 +77,9 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(balanceInputDetails, 1)
         val accountNumber = balanceInputDetails.getOrNull(0)?.toIntOrNull()
 
-        if (accountNumber == null || !isValidInputLength) {
-            return InvalidBalanceRequest("Invalid input format")
-        }
+        if (accountNumber == null || !isValidInputLength) return InvalidBalanceRequest("Invalid input format")
 
-        if (!repository.accountExists(accountNumber)) {
-            return BalanceAccountNotFound("Balance account not found")
-        }
+        if (!repository.accountExists(accountNumber)) return BalanceAccountNotFound("Balance account not found")
 
         val balance = repository.balance(accountNumber)
         return BalanceSuccess(balance.toString())
@@ -106,13 +89,9 @@ class BankAccountServiceImpl(val repository: BankAccountRepository) : BankAccoun
         val isValidInputLength: Boolean = inputValidation.isValidInputLength(statementInputDetails, 1)
         val accountNumber = statementInputDetails.getOrNull(0)?.toIntOrNull()
 
-        if (accountNumber == null || !isValidInputLength) {
-            return InvalidStatementRequest("Invalid input format")
-        }
+        if (accountNumber == null || !isValidInputLength) return InvalidStatementRequest("Invalid input format")
 
-        if (!repository.accountExists(accountNumber)) {
-            return StatementAccountNotFound("Statement account not found")
-        }
+        if (!repository.accountExists(accountNumber)) return StatementAccountNotFound("Statement account not found")
 
         val statement = repository.statement(accountNumber)
         return StatementSuccess(statement)
