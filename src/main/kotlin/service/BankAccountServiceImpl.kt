@@ -1,6 +1,6 @@
 package service
 
-import InputValidation
+import utils.InputValidation
 import models.AccountNumber
 import models.UserName
 import ports.ResultTypes.AccountCreationSuccess

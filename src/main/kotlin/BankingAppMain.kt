@@ -1,6 +1,6 @@
 import adapters.BankAccountRepositoryLocal
 import adapters.UserInputProviderImpl
-import controller.BankingControllerImpl
+import adapters.BankingControllerImpl
 import service.BankAccountServiceImpl
 import ports.BankAccountRepository
 import ports.BankAccountService

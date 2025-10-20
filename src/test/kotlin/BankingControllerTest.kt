@@ -1,5 +1,5 @@
 import adapters.BankAccountRepositoryLocal
-import controller.BankingControllerImpl
+import adapters.BankingControllerImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

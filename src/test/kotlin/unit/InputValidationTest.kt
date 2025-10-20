@@ -1,6 +1,6 @@
 package unit
 
-import InputValidation
+import utils.InputValidation
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

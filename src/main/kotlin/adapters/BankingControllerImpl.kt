@@ -1,4 +1,4 @@
-package controller
+package adapters
 
 import ports.BankAccountService
 import ports.BankingController
