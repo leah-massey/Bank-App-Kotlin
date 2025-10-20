@@ -8,6 +8,7 @@ import ports.BankAccountRepository
 import ports.ResultTypes.BalanceAccountNotFound
 import ports.ResultTypes.BalanceSuccess
 import ports.ResultTypes.CreateAccountResult
+import ports.ResultTypes.DepositAccountNotFound
 import ports.ResultTypes.DepositSuccess
 import ports.ResultTypes.InsufficientFunds
 import ports.ResultTypes.InvalidStatementRequest
@@ -40,7 +41,7 @@ class BankAccountServiceTest {
         }
 
         @Test
-        fun `GIVEN an invalid request, THEN returns ValidationError response`() {
+        fun `GIVEN an invalid request, THEN returns ValidationError`() {
             val userDetails = listOf("Carlos", "Alcaraz", "10")
             val actual: CreateAccountResult = bankAccountService.createNewAccount(userDetails)
 
@@ -58,14 +59,22 @@ class BankAccountServiceTest {
 
             assertEquals(DepositSuccess("Deposit successful"), actual)
         }
+
+        @Test
+        fun `GIVEN account does not exist, THEN returns DepositAccountNotFound`() {
+            val userDetails = listOf("Carlos", "Alcaraz")
+            bankAccountService.createNewAccount(userDetails)
+            val actual = bankAccountService.depositMoney(listOf("10.00", "10003"))
+
+            assertEquals(DepositAccountNotFound("The provided account does not exist"), actual)
+        }
     }
 
-    //TODO test for when bank account does not exist
 
     @Nested
     inner class WithdrawMoney {
         @Test
-        fun `GIVEN a valid account with available funds, THEN WithdrawalSuccess is returned`() {
+        fun `GIVEN a valid account with available funds, THEN returns WithdrawalSuccess`() {
             val userDetails = listOf("Carlos", "Alcaraz")
             bankAccountService.createNewAccount(userDetails)
             bankAccountService.depositMoney(listOf("10.00", "10000"))
@@ -75,19 +84,19 @@ class BankAccountServiceTest {
         }
 
         @Test
-        fun `GIVEN account does not exist THEN WithdrawalAccountNotFound is returned`() {
+        fun `GIVEN account does not exist THEN returns WithdrawalAccountNotFound`() {
             val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
             assertEquals(WithdrawalAccountNotFound("Withdrawal account not found"), actual)
         }
 
         @Test
-        fun `GIVEN withdrawal amount is incorrectly formatted, THEN InvalidWithdrawalRequest is returned`() {
+        fun `GIVEN withdrawal amount is incorrectly formatted, THEN returns InvalidWithdrawalRequest`() {
             val actual = bankAccountService.withdrawMoney(listOf("3ad", "10000"))
             assertEquals(InvalidWithdrawalRequest("Invalid input format"), actual)
         }
 
         @Test
-        fun `GIVEN insufficient funds, THEN InsufficientFunds is returned`() {
+        fun `GIVEN insufficient funds, THEN returns InsufficientFunds`() {
             val userDetails = listOf("Carlos", "Alcaraz")
             bankAccountService.createNewAccount(userDetails)
             val actual = bankAccountService.withdrawMoney(listOf("3.00", "10000"))
@@ -108,7 +117,7 @@ class BankAccountServiceTest {
         }
 
         @Test
-        fun `GIVEN account does not exist, THEN BalanceAccountNotFound returned`() {
+        fun `GIVEN account does not exist, THEN returns BalanceAccountNotFound`() {
             val actual = bankAccountService.getBalance(listOf("10000"))
 
             assertEquals(BalanceAccountNotFound("Balance account not found"), actual)
@@ -128,13 +137,13 @@ class BankAccountServiceTest {
         }
 
         @Test
-        fun `GIVEN account does not exist, THEN StatementAccountNotFound message is returned`() {
+        fun `GIVEN account does not exist, THEN returns StatementAccountNotFound`() {
             val statement = bankAccountService.getStatement(listOf("10000"))
             assertEquals(StatementAccountNotFound("Statement account not found"), statement)
         }
 
         @Test
-        fun `GIVEN incorrect formatting of request, THEN InvalidStatementRequest message is returned`() {
+        fun `GIVEN incorrect formatting of request, THEN returns InvalidStatementRequest`() {
             val statement = bankAccountService.getStatement(listOf("1000", "40"))
             assertEquals(InvalidStatementRequest("Invalid input format"), statement)
         }
