@@ -5,9 +5,9 @@ import models.ResultTypes.DepositAccountNotFound
 import models.ResultTypes.DepositSuccess
 import models.ResultTypes.InvalidDepositRequest
 
-class DepositCommand(val bankAccountService: BankAccountService): Command {
-    override fun execute(details: List<String>) {
-        val result = bankAccountService.depositMoney(details)
+class DepositCommand(): Command {
+    override fun execute(bankAccountService: BankAccountService, commandDetails: List<String>) {
+        val result = bankAccountService.depositMoney(commandDetails)
         when (result) {
             is DepositSuccess -> {
                 println(result.message)

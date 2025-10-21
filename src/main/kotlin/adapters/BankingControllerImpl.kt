@@ -13,13 +13,13 @@ import ports.commands.WithdrawalCommand
 class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
     BankingController {
 
-    private val newAccountCommand = NewAccountCommand(bankAccountService)
-    private val depositCommand = DepositCommand(bankAccountService)
-    private val withdrawalCommand = WithdrawalCommand(bankAccountService)
-    private val balanceCommand = BalanceCommand(bankAccountService)
-    private val statementCommand = StatementCommand(bankAccountService)
+    private val newAccountCommand = NewAccountCommand()
+    private val depositCommand = DepositCommand()
+    private val withdrawalCommand = WithdrawalCommand()
+    private val balanceCommand = BalanceCommand()
+    private val statementCommand = StatementCommand()
 
-    private val commandMap: Map<String, Command> = mapOf(
+    private val commandMap: MutableMap<String, Command> = mutableMapOf(
         "newaccount" to newAccountCommand,
         "deposit" to depositCommand,
         "withdraw" to withdrawalCommand,
@@ -38,11 +38,11 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
             val commandDetails = processedUserInput.drop(1)
 
             when (commandMap[command]) {
-                newAccountCommand -> newAccountCommand.execute(commandDetails)
-                depositCommand -> depositCommand.execute(commandDetails)
-                withdrawalCommand -> withdrawalCommand.execute(commandDetails)
-                balanceCommand -> balanceCommand.execute(commandDetails)
-                statementCommand -> statementCommand.execute(commandDetails)
+                newAccountCommand -> newAccountCommand.execute(bankAccountService, commandDetails)
+                depositCommand -> depositCommand.execute(bankAccountService, commandDetails)
+                withdrawalCommand -> withdrawalCommand.execute(bankAccountService, commandDetails)
+                balanceCommand -> balanceCommand.execute(bankAccountService, commandDetails)
+                statementCommand -> statementCommand.execute(bankAccountService, commandDetails)
                 null -> if (command == "quit") break else println("I didn't quite get that, please try again")
             }
         }

@@ -1,13 +1,13 @@
 package ports.commands
 
-import ports.BankAccountService
 import models.ResultTypes.BalanceAccountNotFound
 import models.ResultTypes.BalanceSuccess
 import models.ResultTypes.InvalidBalanceRequest
+import ports.BankAccountService
 
-class BalanceCommand(val bankAccountService: BankAccountService): Command {
-    override fun execute(details: List<String>) {
-        val result = bankAccountService.getBalance(details)
+class BalanceCommand(): Command {
+    override fun execute(bankAccountService: BankAccountService, commandDetails: List<String>) {
+        val result = bankAccountService.getBalance(commandDetails)
 
         when (result) {
             is BalanceSuccess -> {

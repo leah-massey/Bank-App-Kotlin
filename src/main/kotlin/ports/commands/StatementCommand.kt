@@ -5,9 +5,9 @@ import models.ResultTypes.InvalidStatementRequest
 import models.ResultTypes.StatementAccountNotFound
 import models.ResultTypes.StatementSuccess
 
-class StatementCommand(val bankAccountService: BankAccountService): Command {
-    override fun execute(details: List<String>) {
-        val result = bankAccountService.getStatement(details)
+class StatementCommand(): Command {
+    override fun execute(bankAccountService: BankAccountService, commandDetails: List<String>) {
+        val result = bankAccountService.getStatement(commandDetails)
         when (result) {
             is StatementSuccess -> {
                 result.message?.map { transaction ->

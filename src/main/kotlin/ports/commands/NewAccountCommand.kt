@@ -4,10 +4,10 @@ import ports.BankAccountService
 import models.ResultTypes.AccountCreationSuccess
 import models.ResultTypes.ValidationError
 
-class NewAccountCommand( val bankAccountService: BankAccountService): Command {
-    override fun execute(details: List<String>) {
+class NewAccountCommand(): Command {
+    override fun execute(bankAccountService: BankAccountService, commandDetails: List<String>) {
         val result =
-            bankAccountService.createNewAccount(details)
+            bankAccountService.createNewAccount(commandDetails)
         when (result) {
             is AccountCreationSuccess -> {
                 println(result.accountNumber)

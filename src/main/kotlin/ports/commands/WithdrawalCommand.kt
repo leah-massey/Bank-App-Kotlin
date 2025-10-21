@@ -5,9 +5,9 @@ import models.ResultTypes.InvalidWithdrawalRequest
 import models.ResultTypes.WithdrawalAccountNotFound
 import models.ResultTypes.WithdrawalSuccess
 
-class WithdrawalCommand(val bankAccountService: BankAccountService): Command {
-    override fun execute(details: List<String>) {
-        val result = bankAccountService.withdrawMoney(details)
+class WithdrawalCommand(): Command {
+    override fun execute(bankAccountService: BankAccountService, commandDetails: List<String>) {
+        val result = bankAccountService.withdrawMoney(commandDetails)
 
         when (result) {
             is WithdrawalSuccess -> {
