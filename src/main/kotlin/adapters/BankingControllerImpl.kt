@@ -34,16 +34,12 @@ class BankingControllerImpl(val bankAccountService: BankAccountService, val user
         while (true) {
             print("> ")
             val processedUserInput = userInput.readLine().trim().lowercase().split(" ")
-            val command = processedUserInput.first()
+            val commandString = processedUserInput.first()
             val commandDetails = processedUserInput.drop(1)
 
-            when (commandMap[command]) {
-                newAccountCommand -> newAccountCommand.execute(bankAccountService, commandDetails)
-                depositCommand -> depositCommand.execute(bankAccountService, commandDetails)
-                withdrawalCommand -> withdrawalCommand.execute(bankAccountService, commandDetails)
-                balanceCommand -> balanceCommand.execute(bankAccountService, commandDetails)
-                statementCommand -> statementCommand.execute(bankAccountService, commandDetails)
-                null -> if (command == "quit") break else println("I didn't quite get that, please try again")
+            when (val command = commandMap[commandString]) {
+                is Command -> command.execute(bankAccountService, commandDetails)
+                null -> if (commandString == "quit") break else println("I didn't quite get that, please try again")
             }
         }
     }
