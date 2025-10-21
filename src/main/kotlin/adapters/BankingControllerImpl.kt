@@ -13,18 +13,12 @@ import ports.commands.WithdrawalCommand
 class BankingControllerImpl(val bankAccountService: BankAccountService, val userInput: UserInputProvider) :
     BankingController {
 
-    private val newAccountCommand = NewAccountCommand()
-    private val depositCommand = DepositCommand()
-    private val withdrawalCommand = WithdrawalCommand()
-    private val balanceCommand = BalanceCommand()
-    private val statementCommand = StatementCommand()
-
     private val commandMap: MutableMap<String, Command> = mutableMapOf(
-        "newaccount" to newAccountCommand,
-        "deposit" to depositCommand,
-        "withdraw" to withdrawalCommand,
-        "balance" to balanceCommand,
-        "statement" to statementCommand
+        "newaccount" to NewAccountCommand(),
+        "deposit" to DepositCommand(),
+        "withdraw" to WithdrawalCommand(),
+        "balance" to BalanceCommand(),
+        "statement" to StatementCommand()
     )
 
     override fun startBanking() {
